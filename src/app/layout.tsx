@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className="bg-gray-200 h-screen">
           <UiLibarayProvider>
             <LayoutProvider>{children}</LayoutProvider>
           </UiLibarayProvider>

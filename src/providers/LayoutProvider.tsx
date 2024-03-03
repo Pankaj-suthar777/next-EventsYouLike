@@ -75,7 +75,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <div className="bg-gray-200 h-screen lg:px-20 px-5">
+    <div className="bg-gray-200 lg:px-20 px-5">
       {isPrivateRoute && (
         <div className="bg-white flex justify-between items-center shadow px-3 py-5">
           <h1
