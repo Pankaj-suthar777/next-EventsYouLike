@@ -1,6 +1,7 @@
 import React from "react";
+import { EventFormStepsProps } from "./General";
 
-const Media = () => {
+const Media = ({}: EventFormStepsProps) => {
   return <div></div>;
 };
 

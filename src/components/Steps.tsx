@@ -9,22 +9,28 @@ interface StepsProps {
 
 const Steps = ({ stepNames, stepContent, activeStep }: StepsProps) => {
   return (
-    <div className="stepper-wrapper">
-      {stepNames.map((stepName, index) => {
-        const isActiveStep = index === activeStep;
-        return (
-          <div className={`stepper-item ${isActiveStep ? "completed" : ""}`}>
-            <div className={`step-counter ${isActiveStep ? "text-white" : ""}`}>
-              {activeStep > index ? (
-                <i className="ri-check-line"></i>
-              ) : (
-                index + 1
-              )}
+    <div>
+      <div className="stepper-wrapper">
+        {stepNames.map((stepName, index) => {
+          const isActiveStep = index === activeStep;
+          return (
+            <div className={`stepper-item ${isActiveStep ? "completed" : ""}`}>
+              <div
+                className={`step-counter ${isActiveStep ? "text-white" : ""}`}
+              >
+                {activeStep > index ? (
+                  <i className="ri-check-line"></i>
+                ) : (
+                  index + 1
+                )}
+              </div>
+              <div className="step-name">{stepName}</div>
             </div>
-            <div className="step-name">{stepName}</div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+
+      <div className="mt-5">{stepContent[activeStep]}</div>
     </div>
   );
 };
