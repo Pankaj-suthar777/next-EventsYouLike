@@ -9,6 +9,7 @@ import Tickets from "./Tickets";
 const EventForm = () => {
   const [activeSteps, setActiveSteps] = useState(0);
   const [event, setEvent] = useState<any>(null);
+  const [newlySelectedImages, setNewlySelectedImages] = useState<any[]>([]);
   async function onSubmit(e: any) {
     e.preventDefault();
   }
@@ -18,6 +19,8 @@ const EventForm = () => {
     setActiveSteps,
     event,
     setEvent,
+    newlySelectedImages,
+    setNewlySelectedImages,
   };
   return (
     <div>

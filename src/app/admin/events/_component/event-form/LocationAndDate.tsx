@@ -41,7 +41,7 @@ const LocationAndDate = ({
       </div>
 
       <div className="flex justify-center gap-5">
-        <Button onClick={() => setActiveSteps(activeSteps - 1)}>Cancel</Button>
+        <Button onClick={() => setActiveSteps(activeSteps - 1)}>Back</Button>
         <Button
           color="primary"
           onClick={() => setActiveSteps(activeSteps + 1)}

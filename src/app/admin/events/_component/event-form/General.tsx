@@ -7,6 +7,8 @@ export interface EventFormStepsProps {
   setEvent: React.Dispatch<React.SetStateAction<any>>;
   activeSteps: number;
   setActiveSteps: React.Dispatch<React.SetStateAction<number>>;
+  newlySelectedImages: any[];
+  setNewlySelectedImages: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const General = ({
