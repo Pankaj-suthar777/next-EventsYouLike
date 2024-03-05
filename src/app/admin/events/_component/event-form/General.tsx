@@ -9,6 +9,9 @@ export interface EventFormStepsProps {
   setActiveSteps: React.Dispatch<React.SetStateAction<number>>;
   newlySelectedImages: any[];
   setNewlySelectedImages: React.Dispatch<React.SetStateAction<any[]>>;
+  loading: boolean;
+  alreadyUploadedImages: any[];
+  setAlreadyUploadedImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const General = ({
@@ -23,8 +26,7 @@ const General = ({
     return {
       labelPlacement: "outside" as any,
       value: event?.[name],
-      onChange: (e: any) =>
-        setEvent({ ...event, [name]: e.target.value }) as any,
+      onChange: (e: any) => setEvent({ ...event, [name]: e.target.value }),
       isRequired: true,
     };
   };
@@ -85,7 +87,9 @@ const General = ({
       </div>
       <div className="flex flex-wrap gap-5">
         {event?.guests?.map((guest: string, index: number) => (
-          <Chip onClose={() => onGuestRemove(index)}>{guest}</Chip>
+          <Chip key={index} onClose={() => onGuestRemove(index)}>
+            {guest}
+          </Chip>
         ))}
       </div>
       <div className="flex justify-center gap-5">

@@ -6,9 +6,10 @@ import toast from "react-hot-toast/headless";
 function Media({
   newlySelectedImages,
   setNewlySelectedImages,
-  event,
   activeSteps,
   setActiveSteps,
+  alreadyUploadedImages,
+  setAlreadyUploadedImages,
 }: EventFormStepsProps) {
   const uploadFilesRef = React.useRef<HTMLInputElement>(null);
 
@@ -35,11 +36,11 @@ function Media({
     setNewlySelectedImages(tempImages);
   };
 
-  // const onAlreadyUploadedRemove = (index: number) => {
-  //   const tempImages: string[] = [...alreadyUploadedImages];
-  //   tempImages.splice(index, 1);
-  //   setAlreadyUploadedImages(tempImages);
-  // };
+  const onAlreadyUploadedRemove = (index: number) => {
+    const tempImages: string[] = [...alreadyUploadedImages];
+    tempImages.splice(index, 1);
+    setAlreadyUploadedImages(tempImages);
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -50,7 +51,7 @@ function Media({
             ref={uploadFilesRef}
             hidden
             onChange={onFileSelect}
-            multiple
+            //multiple
           />
           Upload New Image
         </Button>
@@ -58,7 +59,7 @@ function Media({
       {/* // show the newly selected images */}
 
       <div className="flex gap-5">
-        {/* {alreadyUploadedImages?.map((image: any, index: number) => (
+        {alreadyUploadedImages?.map((image: any, index: number) => (
           <div className="border flex flex-col gap-5 rounded pb-5">
             <img
               key={index}
@@ -73,9 +74,9 @@ function Media({
               Remove
             </h1>
           </div>
-        ))} */}
+        ))}
         {newlySelectedImages?.map((image: any, index: number) => (
-          <div className="border flex flex-col gap-5 rounded pb-5">
+          <div key={index} className="border flex flex-col gap-5 rounded pb-5">
             <img
               key={index}
               src={image.url}

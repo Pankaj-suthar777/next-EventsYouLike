@@ -8,6 +8,7 @@ function Tickets({
   setActiveSteps,
   event,
   setEvent,
+  loading,
 }: EventFormStepsProps) {
   function onAddTicket() {
     try {
@@ -15,15 +16,16 @@ function Tickets({
       if (event.ticketTypes) {
         tempEvent.ticketTypes.push({
           name: "",
-          price: 0,
-          limit: 0,
+          price: null,
+          limit: null,
         });
       } else {
-        tempEvent.ticketTypes = [{ name: "", price: 0, limit: 0 }];
+        tempEvent.ticketTypes = [{ name: "", price: null, limit: null }];
       }
       setEvent(tempEvent);
     } catch (error: any) {
       toast.error(error.message);
+      console.log(error);
     }
   }
 
@@ -51,7 +53,7 @@ function Tickets({
       {event.ticketTypes && event.ticketTypes.length > 0 && (
         <div className=" flex flex-col gap-5">
           <div className="grid grid-cols-4 font-semibold rounded justify-between p-2 gap-5">
-            {["Name", "Place", "Limit", ""].map((item, index) => (
+            {["Name", "Price", "Limit", ""].map((item, index) => (
               <h1 className="font-semibold" key={index}>
                 {item}
               </h1>
@@ -68,29 +70,31 @@ function Tickets({
                     value: e.target.value,
                   })
                 }
-                value={ticketType.name}
+                value={ticketType?.name || ""}
               />
               <Input
+                type="number"
                 placeholder="Price"
                 onChange={(e) =>
                   onTicketPropertyChange({
                     index,
                     property: "price",
-                    value: e.target.value,
+                    value: Number(e.target.value),
                   })
                 }
-                value={ticketType.price}
+                value={ticketType?.price || 0}
               />
               <Input
+                type="number"
                 placeholder="Limit"
                 onChange={(e) =>
                   onTicketPropertyChange({
                     index,
                     property: "limit",
-                    value: e.target.value,
+                    value: Number(e.target.value),
                   })
                 }
-                value={ticketType.limit}
+                value={ticketType?.limit || 0}
               />
               <Button isIconOnly onClick={() => onTicketTypeDelete(index)}>
                 <i className="ri-delete-bin-line"></i>
@@ -104,8 +108,13 @@ function Tickets({
       </Button>
       <div className="flex justify-center gap-5">
         <Button onClick={() => setActiveSteps(activeSteps - 1)}>Back</Button>
-        <Button onClick={() => setActiveSteps(activeSteps + 1)} color="primary">
-          Next
+        <Button
+          type="submit"
+          color="primary"
+          isDisabled={event?.ticketTypes?.length === 0}
+          isLoading={loading}
+        >
+          Submit
         </Button>
       </div>
     </div>

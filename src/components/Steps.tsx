@@ -14,7 +14,10 @@ const Steps = ({ stepNames, stepContent, activeStep }: StepsProps) => {
         {stepNames.map((stepName, index) => {
           const isActiveStep = index === activeStep;
           return (
-            <div className={`stepper-item ${isActiveStep ? "completed" : ""}`}>
+            <div
+              key={index}
+              className={`stepper-item ${isActiveStep ? "completed" : ""}`}
+            >
               <div
                 className={`step-counter ${isActiveStep ? "text-white" : ""}`}
               >
