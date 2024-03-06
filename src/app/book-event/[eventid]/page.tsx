@@ -1,6 +1,7 @@
 import { EventType } from "@/interfaces/events";
 import EventModel from "@/models/event-model";
 import React from "react";
+import TicketSelection from "../_components/ticket-selection";
 
 interface Props {
   params: {
@@ -38,6 +39,7 @@ const BookEventPage = async ({ params }: Props) => {
         <div className="flex gap-5 flex-wrap overflow-x-auto mt-7">
           {event.images.map((image) => (
             <img
+              key={image}
               src={image}
               alt="image of event"
               height={280}
@@ -58,6 +60,7 @@ const BookEventPage = async ({ params }: Props) => {
             <h1 className="text-gray-600">{event.guests.join(", ")}</h1>
           </div>
         </div>
+        <TicketSelection event={JSON.parse(JSON.stringify(event))} />
       </div>
     </div>
   );

@@ -24,8 +24,7 @@ export default async function Home() {
                 src={event.images[0]}
                 alt="image of event"
                 height={130}
-                width={250}
-                className="w-full object-contain rounded-sm"
+                className="object-fill w-full rounded-sm"
               />
             </div>
             <div className="col-span-2 flex flex-col gap-5 justify-between p-5">

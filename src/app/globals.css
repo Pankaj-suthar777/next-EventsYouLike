@@ -92,3 +92,33 @@
 .stepper-item:last-child::after {
   content: none;
 }
+/* For WebKit browsers */
+::-webkit-scrollbar {
+  height: 10px; /* Adjust height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+}
+
+/* For Firefox */
+::-moz-scrollbar {
+  height: 10px; /* Adjust height for horizontal scrollbar */
+}
+
+::-moz-scrollbar-thumb {
+  background-color: darkgray;
+}
+
+/* For Internet Explorer/Edge */
+::-ms-scrollbar {
+  height: 10px; /* Adjust height for horizontal scrollbar */
+}
+
+::-ms-scrollbar-thumb {
+  background-color: darkgray;
+}
+
+/* For other browsers */
+scrollbar-height: thin;
+scrollbar-color: darkgray darkgray;
