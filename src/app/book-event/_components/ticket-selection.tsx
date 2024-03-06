@@ -1,5 +1,5 @@
 "use client";
-import { EventType } from "@/interfaces/events";
+import { BookingType, EventType } from "@/interfaces/events";
 import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
@@ -13,10 +13,11 @@ const stripePromise = loadStripe(
 
 interface Props {
   event: EventType;
+  eventBookings: any;
 }
 
-const TicketSelection = ({ event }: Props) => {
-  const [ticketCount, setTicketCount] = useState(1);
+const TicketSelection = ({ event, eventBookings }: Props) => {
+  const [ticketsCount, setTicketsCount] = useState(1);
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectedTicketType, setSelectedTicketType] = useState(
     event.ticketTypes[0].name
@@ -30,12 +31,39 @@ const TicketSelection = ({ event }: Props) => {
       (ticketType) => ticketType.name === selectedTicketType
     );
     if (ticketType) {
-      setTotalAmount(ticketType.price * ticketCount);
+      setTotalAmount(ticketType.price * ticketsCount);
     }
-  }, [ticketCount, selectedTicketType]);
+  }, [ticketsCount, selectedTicketType]);
+
+  const limits: any = {};
+
+  // calculating remaining limit of tickets
+  event.ticketTypes.forEach((ticketType) => {
+    let bookedTickets = 0;
+    eventBookings.forEach((booking: any) => {
+      if (booking.ticketType === ticketType.name) {
+        bookedTickets += booking.ticketsCount;
+      }
+    });
+
+    limits[ticketType.name] = ticketType.limit - bookedTickets;
+  });
 
   const getClientSecret = async () => {
     try {
+      // check if the limit is reached
+      if (limits[selectedTicketType] === 0) {
+        setShowPaymentModal(false);
+        toast.error("Tickets limit reached");
+        return;
+      }
+
+      if (limits[selectedTicketType] < ticketsCount) {
+        setShowPaymentModal(false);
+        toast.error(`Only ${limits[selectedTicketType]} tickets left`);
+        return;
+      }
+
       setLoading(true);
       const response = await axios.post("/api/stripe/client-secret", {
         amount: totalAmount,
@@ -72,7 +100,10 @@ const TicketSelection = ({ event }: Props) => {
               onClick={() => setSelectedTicketType(ticketType.name)}
             >
               <h1 className="font-semibold">{ticketType.name}</h1>
-              <h1 className="text-gray-600 text-sm">$ {ticketType.price}</h1>
+              <h1 className="text-gray-600 text-sm flex justify-between">
+                $ {ticketType.price}{" "}
+                <span>{limits[ticketType.name]} tickets left</span>
+              </h1>
             </div>
           ))}
         </div>
@@ -86,11 +117,11 @@ const TicketSelection = ({ event }: Props) => {
             <div
               key={index}
               className={`bg-gray-100 border flex justify-center cursor-pointer items-center h-12 w-14 ${
-                ticketCount === index + 1
+                ticketsCount === index + 1
                   ? "border-blue-800"
                   : "border-gray-200"
               }`}
-              onClick={() => setTicketCount(index + 1)}
+              onClick={() => setTicketsCount(index + 1)}
             >
               {index + 1}
             </div>
@@ -114,6 +145,10 @@ const TicketSelection = ({ event }: Props) => {
           <PaymentModal
             setShowPaymentModal={setShowPaymentModal}
             showPaymentModal={showPaymentModal}
+            totalAmount={totalAmount}
+            ticketsCount={ticketsCount}
+            ticketType={selectedTicketType}
+            event={event}
           />
         </Elements>
       )}

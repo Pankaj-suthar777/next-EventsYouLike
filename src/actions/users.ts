@@ -16,9 +16,10 @@ export const handleNewUserRegistration = async () => {
 
     // create a new user
     const newUser = new UserModel({
-      // because username is null
-      // userName: loggedInUser?.username,
-      userName: loggedInUser?.firstName || "" + loggedInUser?.lastName || "",
+      // userName: loggedInUser?.firstName || "" + loggedInUser?.lastName || "",
+      userName:
+        loggedInUser?.username ||
+        `${loggedInUser?.firstName} ${loggedInUser?.lastName}`,
       email: loggedInUser?.emailAddresses[0].emailAddress,
       clerkUserId: loggedInUser?.id,
     });
