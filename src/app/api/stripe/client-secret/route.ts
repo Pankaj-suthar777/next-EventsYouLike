@@ -6,12 +6,13 @@ export async function POST(request: NextRequest) {
   try {
     // generate client secret
     const reqBody = await request.json();
-    const amount = reqBody.amount;
+    const amount = reqBody.amount * 100;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: "inr",
       metadata: { intergration_check: "accept_a_payment" },
+      description: "payment",
     });
 
     const clientSecret = paymentIntent.client_secret;

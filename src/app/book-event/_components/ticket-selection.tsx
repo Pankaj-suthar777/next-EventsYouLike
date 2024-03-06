@@ -6,8 +6,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import PaymentModal from "./payment-model";
 const stripePromise = loadStripe(
-  "pk_test_51OrJ2pSEl0Vn4ioyguRKXrOLW4xtCUr2zDNDMjAlKMdpYBlQ3yj8IlPK6cHogjhk2Q4rB6GNXj8vuwcuigMekdKI00WQWOTwLG"
+  "pk_test_51OhvW7Gr7paNn0fxbC8fWbjyifJHhT5vKdT8IR2oz8X8bAbz0oiJaqHMg8B9bUjNaEwBffNgspnjAR0QlISGQPel00EN3uyBLK"
 );
 
 interface Props {
@@ -21,7 +22,8 @@ const TicketSelection = ({ event }: Props) => {
     event.ticketTypes[0].name
   );
   const [clientSecret, setClientSecret] = useState("");
-  const [showPaymentModal, setShowPAymentModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const ticketType = event.ticketTypes.find(
@@ -34,20 +36,23 @@ const TicketSelection = ({ event }: Props) => {
 
   const getClientSecret = async () => {
     try {
+      setLoading(true);
       const response = await axios.post("/api/stripe/client-secret", {
         amount: totalAmount,
       });
       setClientSecret(response.data.clientSecret);
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (totalAmount) {
+    if (showPaymentModal) {
       getClientSecret();
     }
-  }, [totalAmount]);
+  }, [showPaymentModal]);
 
   return (
     <div className="mt-7">
@@ -96,8 +101,22 @@ const TicketSelection = ({ event }: Props) => {
         <h1 className="font-semibold text-2xl uppercase">
           Total Amount : &#8377; {totalAmount}
         </h1>
-        <Button color="primary">Book Now</Button>
+        <Button
+          color="primary"
+          isLoading={loading}
+          onClick={() => setShowPaymentModal(true)}
+        >
+          Book Now
+        </Button>
       </div>
+      {clientSecret && showPaymentModal && (
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <PaymentModal
+            setShowPaymentModal={setShowPaymentModal}
+            showPaymentModal={showPaymentModal}
+          />
+        </Elements>
+      )}
     </div>
   );
 };
