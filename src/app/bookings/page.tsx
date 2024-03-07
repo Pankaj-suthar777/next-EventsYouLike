@@ -68,6 +68,10 @@ const BookingsPage = async () => {
                 key: "Booked on",
                 value: dayjs(booking.createdAt).format("DD/MM/YYYY hh/mm A"),
               })}
+              {getProperty({
+                key: "Status",
+                value: booking.status,
+              })}
             </div>
           </div>
         ))}

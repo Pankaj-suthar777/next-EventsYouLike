@@ -1,10 +1,10 @@
-import { getMongoDBUserIdOfLoggedInUser } from "@/actions/users";
 import { connectDB } from "@/config/dbConfig";
 import { BookingType } from "@/interfaces/events";
 import BookingModel from "@/models/booking-model";
 import React from "react";
 import dayjs from "dayjs";
 import PageTitle from "@/components/PageTitle";
+import CancelBookingButton from "@/app/bookings/_component/cancel-booking-button";
 connectDB();
 
 const getProperty = ({ key, value }: { key: string; value: any }) => {
@@ -17,7 +17,6 @@ const getProperty = ({ key, value }: { key: string; value: any }) => {
 };
 
 const BookingAdminPage = async () => {
-  const mongoUserId = await getMongoDBUserIdOfLoggedInUser();
   const bookedEvents: BookingType[] = (await BookingModel.find({})
     .populate("event")
     .populate("user")) as any;
@@ -30,18 +29,25 @@ const BookingAdminPage = async () => {
             key={booking._id}
             className="border border-gray-300 bg-gray-100 flex flex-col gap-5"
           >
-            <div className="bg-gray-700 p-3 text-white">
-              <h1 className="text-2xl font-semibold">{booking.event.name}</h1>
-              <div className="text-sm text-gray-200 flex gap-10 mt-3">
-                <h1>
-                  <i className="ri-map-pin-line pr-2"></i>{" "}
-                  {booking.event.location}
-                </h1>
-                <h1>
-                  <i className="ri-calendar-line pr-2"></i> {booking.event.date}{" "}
-                  at {booking.event.time}
-                </h1>
+            <div className="bg-gray-700 p-3 text-white flex justify-between items-center">
+              <div>
+                <h1 className="text-2xl font-semibold">{booking.event.name}</h1>
+                <div className="text-sm text-gray-200 flex gap-10 mt-3">
+                  <h1>
+                    <i className="ri-map-pin-line pr-2"></i>{" "}
+                    {booking.event.location}
+                  </h1>
+                  <h1>
+                    <i className="ri-calendar-line pr-2"></i>{" "}
+                    {booking.event.date} at {booking.event.time}
+                  </h1>
+                </div>
               </div>
+              {booking.status !== "cancelled" && (
+                <CancelBookingButton
+                  booking={JSON.parse(JSON.stringify(booking))}
+                />
+              )}
             </div>
             <div className="grid grid-cols-3 gap-5 p-3">
               {getProperty({
@@ -75,6 +81,10 @@ const BookingAdminPage = async () => {
               {getProperty({
                 key: "Booked on",
                 value: dayjs(booking.createdAt).format("DD/MM/YYYY hh/mm A"),
+              })}
+              {getProperty({
+                key: "Status",
+                value: booking.status,
               })}
             </div>
           </div>

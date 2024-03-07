@@ -118,6 +118,13 @@
 ::-ms-scrollbar-thumb {
   background-color: darkgray;
 }
+.cl-userButtonPopoverFooter {
+  display: none !important;
+}
+
+.cl-internal-wkkub3 {
+  display: none !important;
+}
 
 /* For other browsers */
 scrollbar-height: thin;
