@@ -16,14 +16,14 @@ const getProperty = ({ key, value }: { key: string; value: any }) => {
   );
 };
 
-const BookingsPage = async () => {
+const BookingAdminPage = async () => {
   const mongoUserId = await getMongoDBUserIdOfLoggedInUser();
-  const bookedEvents: BookingType[] = (await BookingModel.find({
-    user: mongoUserId,
-  }).populate("event")) as any;
+  const bookedEvents: BookingType[] = (await BookingModel.find({})
+    .populate("event")
+    .populate("user")) as any;
   return (
     <div>
-      <PageTitle title="My Bookings" />
+      <PageTitle title="All Bookings" />
       <div className="flex flex-col gap-5 mt-5">
         {bookedEvents.map((booking) => (
           <div
@@ -47,6 +47,14 @@ const BookingsPage = async () => {
               {getProperty({
                 key: "Booking Id",
                 value: booking._id,
+              })}
+              {getProperty({
+                key: "User Id",
+                value: booking.user._id,
+              })}
+              {getProperty({
+                key: "User Name",
+                value: booking.user.userName,
               })}
               {getProperty({
                 key: "Ticket Type",
@@ -76,4 +84,4 @@ const BookingsPage = async () => {
   );
 };
 
-export default BookingsPage;
+export default BookingAdminPage;
