@@ -125,7 +125,3 @@
 .cl-internal-wkkub3 {
   display: none !important;
 }
-
-/* For other browsers */
-scrollbar-height: thin;
-scrollbar-color: darkgray darkgray;

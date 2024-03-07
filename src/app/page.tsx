@@ -1,18 +1,42 @@
 import { handleNewUserRegistration } from "@/actions/users";
+import Filters from "@/components/Filters";
 import { connectDB } from "@/config/dbConfig";
 import { EventType } from "@/interfaces/events";
 import EventModel from "@/models/event-model";
 import { Link } from "@nextui-org/react";
 connectDB();
 
-export default async function Home() {
+interface Props {
+  searchParams: {
+    name: string;
+    date: string;
+  };
+}
+
+export default async function Home({ searchParams }: Props) {
   await handleNewUserRegistration();
 
-  const events: EventType[] = (await EventModel.find().sort({
+  let filters = {};
+  if (searchParams.name) {
+    filters = {
+      name: {
+        $regex: searchParams.name,
+        $options: "i",
+      },
+    };
+  }
+  if (searchParams.date) {
+    filters = {
+      ...filters,
+      date: searchParams.date,
+    };
+  }
+  const events: EventType[] = (await EventModel.find(filters).sort({
     createdAt: -1,
   })) as any;
   return (
     <div>
+      <Filters />
       <div className="flex flex-col gap-5">
         {events.map((event) => (
           <div
@@ -53,6 +77,11 @@ export default async function Home() {
           </div>
         ))}
       </div>
+      {events.length === 0 && (
+        <div className="w-full mt-120 flex justify-center">
+          <h1 className="text-2xl">No events found for your search</h1>
+        </div>
+      )}
     </div>
   );
 }
