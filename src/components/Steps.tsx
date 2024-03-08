@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "@nextui-org/react";
 
 interface StepsProps {
   stepNames: string[];
-  stepContent: React.ReactNode;
+  stepContent: any;
   activeStep: number;
 }
 
