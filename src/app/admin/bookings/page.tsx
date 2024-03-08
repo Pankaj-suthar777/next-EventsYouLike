@@ -18,6 +18,7 @@ const getProperty = ({ key, value }: { key: string; value: any }) => {
 
 const BookingAdminPage = async () => {
   const bookedEvents: BookingType[] = (await BookingModel.find({})
+    .sort({ createdAt: -1 })
     .populate("event")
     .populate("user")) as any;
   return (

@@ -110,7 +110,11 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       )}
-      <div className="py-3">{children}</div>
+      <div className="py-3">
+        {!isAdmin && pathName.includes("/admin")
+          ? "You are not authorized to view this page"
+          : children}
+      </div>
     </div>
   );
 };

@@ -20,7 +20,9 @@ const BookingsPage = async () => {
   const mongoUserId = await getMongoDBUserIdOfLoggedInUser();
   const bookedEvents: BookingType[] = (await BookingModel.find({
     user: mongoUserId,
-  }).populate("event")) as any;
+  })
+    .sort({ createdAt: -1 })
+    .populate("event")) as any;
   return (
     <div>
       <PageTitle title="My Bookings" />
