@@ -80,6 +80,7 @@ const PaymentModal = ({
       isOpen={showPaymentModal}
       onClose={() => setShowPaymentModal(false)}
       size="2xl"
+      placement="center"
     >
       <ModalContent>
         <form className="p-5 mt-3" onSubmit={handleSubmit}>
