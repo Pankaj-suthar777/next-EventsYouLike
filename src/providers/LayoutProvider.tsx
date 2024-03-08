@@ -66,7 +66,12 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
         setMenuToShow(menusForUser);
       }
     } catch (error: any) {
-      toast.error(error.message);
+      const CurrentRoute = ["/sign-in", "/sign-out"].includes(pathName);
+      if (CurrentRoute) {
+        return;
+      } else {
+        toast.error(error.message);
+      }
     }
   }
 
