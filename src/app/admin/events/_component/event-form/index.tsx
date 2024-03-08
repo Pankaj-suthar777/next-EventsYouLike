@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   initialData?: any;
-  type: "edit" | "create";
+  type?: "edit" | "create";
 }
 
 const EventForm = ({ initialData, type = "create" }: Props) => {
