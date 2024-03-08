@@ -88,7 +88,7 @@ const TicketSelection = ({ event, eventBookings }: Props) => {
         <h1 className="text-xl font-semibold mb-2 text-gray-700">
           Select Ticket Type
         </h1>
-        <div className="grid grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-10 gap-5">
           {event.ticketTypes.map((ticketType) => (
             <div
               key={ticketType.name}
@@ -128,8 +128,8 @@ const TicketSelection = ({ event, eventBookings }: Props) => {
           ))}
         </div>
       </div>
-      <div className="mt-7 bg-gray-100 border border-gray-200 p-3 flex justify-between items-center">
-        <h1 className="font-semibold text-2xl uppercase">
+      <div className="mt-7 bg-gray-100 border border-gray-200 p-3 flex justify-between items-center gap-2">
+        <h1 className="font-semibold md:text-2xl w-full uppercase">
           Total Amount : &#8377; {totalAmount}
         </h1>
         <Button

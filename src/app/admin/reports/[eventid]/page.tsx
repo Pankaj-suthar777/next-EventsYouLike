@@ -42,9 +42,9 @@ const EventReportPage = async ({ params }: Props) => {
 
   return (
     <div>
-      <div className="bg-gray-700 p-5 text-white flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold">{event.name} - Reports</h1>
-        <div className="text-sm text-gray-200 flex gap-10">
+      <div className="bg-gray-700 md:p-5 p-3 text-white flex flex-col gap-3">
+        <h1 className="md:text-3xl font-semibold">{event.name} - Reports</h1>
+        <div className="text-sm text-gray-200 flex md:flex-row flex-col md:gap-10 gap-3">
           <h1>
             <i className="ri-map-pin-line pr-2"></i> {event.location}
           </h1>
@@ -54,10 +54,10 @@ const EventReportPage = async ({ params }: Props) => {
           </h1>
         </div>
       </div>
-      <h1 className="text-2xl font-semibold mt-5">
+      <h1 className="md:text-2xl text-xl  font-semibold mt-5">
         Ticket Types and Their Revenues
       </h1>
-      <div className="grid grid-cols-4 mt-5 gap-5">
+      <div className="grid md:grid-cols-4 mt-5 gap-5">
         {Object.keys(ticketTypesAndTheirRevenue).map((ticketType) => (
           <div className="p-3 bg-white rounded-sm shadow border">
             <h1 className="font-semibold text-lg">{ticketType}</h1>
@@ -74,8 +74,8 @@ const EventReportPage = async ({ params }: Props) => {
           </div>
         ))}
       </div>
-      <div className="mt-5 bg-white rounded-md flex justify-between p-5">
-        <h1 className="text-3xl font-semibold">Total Revenue</h1>
+      <div className="mt-5 bg-white rounded-md flex justify-between items-center p-5">
+        <h1 className="md:text-3xl   text-xl font-semibold">Total Revenue</h1>
         <h1 className="text-2xl font-semibold">&#8377;{totalRevenue}</h1>
       </div>
     </div>

@@ -29,15 +29,17 @@ const BookEventPage = async ({ params }: Props) => {
   return (
     <div className="bg-white">
       <div className="bg-gray-700 p-5 text-white flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold">{event.name}</h1>
+        <h1 className="md:text-3xl text-xl font-semibold">{event.name}</h1>
         <div className="text-sm text-gray-200 flex gap-10">
-          <h1>
-            <i className="ri-map-pin-line pr-2"></i> {event.location}
-          </h1>
-          <h1>
-            <i className="ri-calendar-line pr-2"></i> {event.date} at{" "}
-            {event.time}
-          </h1>
+          <div className="flex">
+            <i className="ri-map-pin-line pr-2"></i> <h1>{event.location}</h1>
+          </div>
+          <div className="flex">
+            <i className="ri-calendar-line pr-2"></i>{" "}
+            <h1>
+              {event.date} at {event.time}
+            </h1>
+          </div>
         </div>
       </div>
       <div className="p-5">
@@ -54,13 +56,13 @@ const BookEventPage = async ({ params }: Props) => {
           ))}
         </div>
         <p className="text-gray-500 w-full mt-7 text-sm">{event.description}</p>
-        <div className="mt-5 bg-gray-100 border border-gray-200 p-3 rounded-sm grid grid-cols-3 gap-5">
+        <div className="mt-7 bg-gray-100 border border-gray-200 p-3 rounded-sm grid grid-cols-1 md:grid-cols-3 gap-5">
           {getEventProperty("organizer")}
           {getEventProperty("location")}
           {getEventProperty("date")}
           {getEventProperty("time")}
 
-          <div className="flex flex-col text-sm col-span-2">
+          <div className="flex flex-col text-sm">
             <h1 className="font-semibold capitalize">Chief Guests</h1>
             <h1 className="text-gray-600">{event.guests.join(", ")}</h1>
           </div>

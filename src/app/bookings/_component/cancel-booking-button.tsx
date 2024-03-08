@@ -24,7 +24,7 @@ const CancelBookingButton = ({ booking }: { booking: BookingType }) => {
     }
   };
   return (
-    <div className="p-3">
+    <div className="md:p-3 pt-3 flex justify-end">
       <Button color="warning" isLoading={loading} onClick={cancelBooking}>
         Cancel Booking
       </Button>

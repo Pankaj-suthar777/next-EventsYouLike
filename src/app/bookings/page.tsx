@@ -31,8 +31,10 @@ const BookingsPage = async () => {
             className="border border-gray-300 bg-gray-100 flex flex-col gap-5"
           >
             <div className="bg-gray-700 p-3 text-white">
-              <h1 className="text-2xl font-semibold">{booking.event.name}</h1>
-              <div className="text-sm text-gray-200 flex gap-10 mt-3">
+              <h1 className="md:text-2xl font-semibold">
+                {booking.event.name}
+              </h1>
+              <div className="text-sm text-gray-200 flex flex-col md:flex-row md:gap-10 gap-3 mt-3">
                 <h1>
                   <i className="ri-map-pin-line pr-2"></i>{" "}
                   {booking.event.location}
@@ -43,7 +45,7 @@ const BookingsPage = async () => {
                 </h1>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-5 p-3">
+            <div className="grid md:grid-cols-3 md:gap-5 gap-3 p-3">
               {getProperty({
                 key: "Booking Id",
                 value: booking._id,
