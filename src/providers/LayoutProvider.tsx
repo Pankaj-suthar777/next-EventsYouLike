@@ -43,7 +43,6 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
       title: "Home",
       path: "/",
     },
-
     {
       title: "Bookings",
       path: "/bookings",
@@ -53,15 +52,17 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathName = usePathname();
   const isPrivateRoute = !["/sign-in", "/sign-out"].includes(pathName);
+
   const [menuToShow, setMenuToShow] = useState<any[]>([]);
+  const [isGuestUser, setIsGuestUser] = useState(true);
 
   async function getUserData() {
     try {
       const response = await axios.get("/api/current-user");
-      console.log("response", response.data);
       if (response.data.user.isAdmin) {
         setMenuToShow(menusForAdmin);
         setIsAdmin(true);
+        setIsGuestUser(false);
       } else {
         setMenuToShow(menusForUser);
       }
@@ -69,8 +70,6 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
       const CurrentRoute = ["/sign-in", "/sign-out"].includes(pathName);
       if (CurrentRoute) {
         return;
-      } else {
-        toast.error(error.message);
       }
     }
   }
@@ -92,25 +91,30 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
             EventsYouLike
           </h1>
           <div className="flex gap-5">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button variant="flat" color="primary" size="sm">
-                  Profile
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Dynamic Actions">
-                {menuToShow.map((menu) => (
-                  <DropdownItem
-                    key={menu.title}
-                    onClick={() => {
-                      router.push(menu.path);
-                    }}
-                  >
-                    {menu.title}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+            {isGuestUser ? (
+              <Button onClick={() => router.push("/sign-in")}>Login</Button>
+            ) : (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="flat" color="primary" size="sm">
+                    Profile
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Dynamic Actions">
+                  {menuToShow.map((menu) => (
+                    <DropdownItem
+                      key={menu.title}
+                      onClick={() => {
+                        router.push(menu.path);
+                      }}
+                    >
+                      {menu.title}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            )}
+
             <UserButton afterSignOutUrl="/" />
           </div>
         </div>

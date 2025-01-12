@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import PaymentModal from "./payment-model";
+import { useUser } from "@clerk/nextjs";
 const stripePromise = loadStripe(
   "pk_test_51OhvW7Gr7paNn0fxbC8fWbjyifJHhT5vKdT8IR2oz8X8bAbz0oiJaqHMg8B9bUjNaEwBffNgspnjAR0QlISGQPel00EN3uyBLK"
 );
@@ -25,6 +26,8 @@ const TicketSelection = ({ event, eventBookings }: Props) => {
   const [clientSecret, setClientSecret] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     const ticketType = event.ticketTypes.find(
@@ -132,10 +135,17 @@ const TicketSelection = ({ event, eventBookings }: Props) => {
         <h1 className="font-semibold md:text-2xl w-full uppercase">
           Total Amount : &#8377; {totalAmount}
         </h1>
+        {}
         <Button
           color="primary"
           isLoading={loading}
-          onClick={() => setShowPaymentModal(true)}
+          onClick={() => {
+            if (isSignedIn) {
+              setShowPaymentModal(true);
+            } else {
+              toast.error("login first to book tickets");
+            }
+          }}
         >
           Book Now
         </Button>
