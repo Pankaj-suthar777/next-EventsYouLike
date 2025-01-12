@@ -135,7 +135,6 @@ const TicketSelection = ({ event, eventBookings }: Props) => {
         <h1 className="font-semibold md:text-2xl w-full uppercase">
           Total Amount : &#8377; {totalAmount}
         </h1>
-        {}
         <Button
           color="primary"
           isLoading={loading}

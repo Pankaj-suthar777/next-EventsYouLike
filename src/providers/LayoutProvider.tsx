@@ -55,8 +55,10 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [menuToShow, setMenuToShow] = useState<any[]>([]);
   const [isGuestUser, setIsGuestUser] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getUserData() {
+    setIsLoading(true);
     try {
       const response = await axios.get("/api/current-user");
       if (response.data.user.isAdmin) {
@@ -68,9 +70,12 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: any) {
       const CurrentRoute = ["/sign-in", "/sign-out"].includes(pathName);
+      setIsLoading(false);
       if (CurrentRoute) {
         return;
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -91,7 +96,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
             EventsYouLike
           </h1>
           <div className="flex gap-5">
-            {isGuestUser ? (
+            {isGuestUser && !isLoading ? (
               <Button onClick={() => router.push("/sign-in")}>Login</Button>
             ) : (
               <Dropdown>
